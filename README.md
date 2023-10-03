@@ -6,7 +6,7 @@ This is a demo of improving Stable Diffusion prompts with Retrieval-Augmented Ge
 - Vector Database: FAISS
 - Prompt Database: a subset from [DiffusionDB](https://huggingface.co/datasets/poloclub/diffusiondb) on Hugging Face
 
-### 1. Download this git repo and setup the RAG Application in Sagemaker Studio or EC2 instance.
+### 1. Download this git repo to Sagemaker Studio or EC2 instance`(AWS Cloud9).
 
 ### 2. Configure environment variables using the command blueprints below:
 ```
