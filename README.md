@@ -1,4 +1,6 @@
 # Stable-Diffusion-Prompt-RAG
+![](./img/RAG4PromptImprovement.png)
+
 This is a demo of improving Stable Diffusion prompts with Retrieval-Augmented Generation (RAG) using Amazon Bedrock models:
 - Text Generation: [Claude V2](https://aws.amazon.com/bedrock/claude/) "anthropic.claude-v2"
 - Text Embedding: [Titan embedding](https://aws.amazon.com/bedrock/titan/) "amazon.titan-embed-text-v1"
