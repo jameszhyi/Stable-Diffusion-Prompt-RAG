@@ -6,9 +6,9 @@ This is a demo of improving Stable Diffusion prompts with Retrieval-Augmented Ge
 - Vector Database: FAISS
 - Prompt Database: a subset from [DiffusionDB](https://huggingface.co/datasets/poloclub/diffusiondb) on Hugging Face
 
-## 1. Download this git repo and setup the RAG Application in Sagemaker Studio or EC2 instance.
+### 1. Download this git repo and setup the RAG Application in Sagemaker Studio or EC2 instance.
 
-## 2. Configure environment variables using the command blueprints below:
+### 2. Configure environment variables using the command blueprints below:
 ```
 export BWB_ENDPOINT_URL=https://IF_YOU_WERE_PROVIDED_A_SPECIAL_ENDPOINT_URL_IT_GOES_HERE.com
 export BWB_PROFILE_NAME=IF_YOU_NEED_TO_USE_AN_AWS_CLI_PROFILE_IT_GOES_HERE
@@ -21,18 +21,18 @@ echo $BWB_ENDPOINT_URL
 echo $BWB_PROFILE_NAME
 echo $BWB_REGION_NAME
 ```
-## 3. Install the required python libraries by running the command: 
+### 3. Install the required python libraries by running the command: 
 ```
 pip install -r requirements.txt
 ```
 
-## 4. Prepare the dataset of 1K prompt examples from DiffusionDB by running the command:
+### 4. Prepare the dataset of 1K prompt examples from DiffusionDB by running the command:
 ```
 python imgrag_prep.py
 ```
 Note: This step will take about 1-2 mins. 
 
-## 5. Run the application using the command by running the command:
+### 5. Run the application using the command by running the command:
 ```
 streamlit run app.py
 ```
