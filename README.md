@@ -23,18 +23,18 @@ echo $BWB_ENDPOINT_URL
 echo $BWB_PROFILE_NAME
 echo $BWB_REGION_NAME
 ```
-### 3. Install the required python libraries by running the command: 
+### 3. Install the required python libraries: 
 ```
 pip install -r requirements.txt
 ```
 
-### 4. Prepare the dataset of 1K prompt examples from DiffusionDB by running the command:
+### 4. Prepare the dataset of 1K prompt examples from DiffusionDB:
 ```
 python imgrag_prep.py
 ```
 Note: This step will take about 1-2 mins. 
 
-### 5. Run the application by running the command:
+### 5. Run the application:
 ```
 streamlit run app.py
 ```
