@@ -8,7 +8,7 @@ This is a demo of improving Stable Diffusion prompts with Retrieval-Augmented Ge
 - Vector Database: FAISS
 - Prompt Database: a subset from [DiffusionDB](https://huggingface.co/datasets/poloclub/diffusiondb) on Hugging Face
 
-### 1. Download this git repo to Sagemaker Studio or EC2 instance`(AWS Cloud9).
+### 1. Download this git repo into your Sagemaker Studio or EC2 instance (AWS Cloud9).
 
 ### 2. Configure environment variables using the command blueprints below:
 ```
@@ -34,7 +34,7 @@ python imgrag_prep.py
 ```
 Note: This step will take about 1-2 mins. 
 
-### 5. Run the application using the command by running the command:
+### 5. Run the application by running the command:
 ```
 streamlit run app.py
 ```
