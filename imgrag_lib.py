@@ -12,13 +12,13 @@ from langchain.prompts import PromptTemplate
 from langchain.chains.question_answering import load_qa_chain
 
 session = boto3.Session(
-#    profile_name=os.environ.get("BWB_PROFILE_NAME")
+#    profile_name=os.environ.get("AWS_PROFILE_NAME")
 ) #sets the profile name to use for AWS credentials
 
 bedrock_client = session.client(
     service_name='bedrock-runtime', #creates a Bedrock client
-    region_name=os.environ.get("BWB_REGION_NAME"),
-    endpoint_url=os.environ.get("BWB_ENDPOINT_URL")
+    region_name=os.environ.get("AWS_REGION_NAME"),
+    endpoint_url=os.environ.get("AWS_ENDPOINT_URL")
 ) 
 
 ###############################################################################
