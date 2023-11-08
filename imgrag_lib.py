@@ -9,16 +9,16 @@ from langchain.vectorstores import FAISS
 from langchain.indexes import VectorstoreIndexCreator
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.prompts import PromptTemplate
-from langchain.chains.question_answering import load_qa_chain
+from langchain import LLMChain
 
 session = boto3.Session(
-#    profile_name=os.environ.get("AWS_PROFILE_NAME")
+#    profile_name=os.environ.get("BWB_PROFILE_NAME")
 ) #sets the profile name to use for AWS credentials
 
 bedrock_client = session.client(
     service_name='bedrock-runtime', #creates a Bedrock client
-    region_name=os.environ.get("AWS_REGION_NAME"),
-    endpoint_url=os.environ.get("AWS_ENDPOINT_URL")
+    region_name=os.environ.get("BWB_REGION_NAME"),
+    endpoint_url=os.environ.get("BWB_ENDPOINT_URL")
 ) 
 
 ###############################################################################
@@ -34,7 +34,7 @@ def get_llm():
     
     model_kwargs =  { 
         "max_tokens_to_sample": 1024, 
-        "temperature": 0, 
+        "temperature": 1, 
         "top_k": 250,
         "top_p": 1,
         #"stop_sequences": ["\n\nHuman:"]
@@ -62,35 +62,38 @@ def get_index(): #creates and returns an in-memory vector store to be used in th
         
     return index_from_loader #return the index to be cached by the client app
 
-
-def get_rag_response(index, original_prompt): #rag client function
-    
-    llm = get_llm()
-    
+def sementic_search(index, original_prompt): #rag client function
+        
     relevant_prompts = index.similarity_search(original_prompt)    
 
     list_prompts = []
     for i in range(len(relevant_prompts)):
         list_prompts.append(relevant_prompts[i].page_content)
-        
+    
+    return list_prompts
+
+
+def get_rag_response(original_prompt, selected_prompt): #rag client function
+    
+    llm = get_llm()
+
     # Create a Prompt Template
-    prompt_template = """This app is to generate prompt for image generation. the user will provide Original Prompt for image generation. Based on Relevant Contexts, slightly revise Original Prompt. \
+    prompt_template = """This app is to generate prompt for image generation. the user will provide Original Prompt for image generation. Based on Selected prompt, Only slightly revise Original Prompt. \
                     Please keep the Generated Prompt clear, complete, and less than 50 words. 
                     Original Prompt: {original_prompt}\n\n
-                    Relevant Contexts: {context}\n\n
+                    Selected Prompt: {selected_prompt}\n\n
                     Generated Prompt: """
 
-    PROMPT = PromptTemplate(template=prompt_template, input_variables=["context", "original_prompt"])
+    PROMPT = PromptTemplate(template=prompt_template, input_variables=["original_prompt", "selected_prompt"])
 
-    chain = load_qa_chain(llm=llm, prompt=PROMPT)
+    llm_chain = LLMChain(
+         llm=llm,
+         prompt=PROMPT
+     )
 
-    result = chain({"input_documents": relevant_prompts, "original_prompt": original_prompt}, return_only_outputs=True)[
-        "output_text"
-    ]
+    result = llm_chain.run({"original_prompt": original_prompt, "selected_prompt": selected_prompt,})
     
-    
-    #response_text = index.query(question=question, llm=llm) #search against the in-memory index, stuff results into a prompt and send to the llm
-    return list_prompts, result
+    return result
 
 
 ###############################################################################
@@ -116,4 +119,3 @@ def get_image_response(prompt_content): #text-to-text client function
     output = get_response_image_from_payload(response) #convert the response payload to a BytesIO object for the client to consume
     
     return output
-

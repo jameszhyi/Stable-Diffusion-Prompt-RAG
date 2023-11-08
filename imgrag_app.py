@@ -31,11 +31,13 @@ st.write("This demo will improve your text-to-image prompts by using Retrieval A
 
 
 #st.write("The following list won’t indent no matter what I try:")
-st.markdown("Step 1: Prompt Improvement")
+st.markdown("Step 1: Semantic Search")
 st.markdown("- Provide your prompt")
 st.markdown("- Semantic Search for the most relevant prompts in a Prompt Database with 1K prompt examples from [DiffusionDB](https://huggingface.co/datasets/poloclub/diffusiondb)")
-st.markdown("- Generate new prompt based on the relevant prompts")
-st.markdown("Step 2: Image Generation using [Stable Diffusion XL](https://aws.amazon.com/marketplace/pp/prodview-pe7wqwehghdtm?sr=0-1&ref_=beagle&applicationId=AWSMPContessa) with the prompt you like! ")
+st.markdown("Step 2: Prompt Generation using LLM")
+st.markdown("- Select the prompt you like to use from the searh results")
+st.markdown("- Generate new prompt based on the selected prompt using [Claude V2](https://aws.amazon.com/bedrock/claude/)")
+st.markdown("Step 3: Image Generation using [Stable Diffusion XL](https://aws.amazon.com/marketplace/pp/prodview-pe7wqwehghdtm?sr=0-1&ref_=beagle&applicationId=AWSMPContessa) with the prompt you like! ")
 
 st.markdown('''
 <style>
@@ -64,12 +66,15 @@ with tab1:
         submitted1 = st.form_submit_button("Send")
         
         if submitted1 and len(original_prompt) > 0:
-            list_prompts, new_prompt = glib.get_rag_response(index=st.session_state.vector_index, original_prompt=original_prompt) #call the model through the supporting library
-
+            list_prompts = glib.sementic_search(index=st.session_state.vector_index, original_prompt=original_prompt)
+            
             st.markdown('''**:blue[Below are the relevant prompts in DIFFUSIONDB:]**''')
             for i in range(len(list_prompts)):
                 st.write("- " + list_prompts[i])
-
+                        
+            number_selected = st.number_input('Which prompt you want to use for further improvement? Insert a number',value=0)
+            print(list_prompts[number_selected])
+            new_prompt = glib.get_rag_response(original_prompt, list_prompts[number_selected])
             st.markdown('''**:blue[Below is the prompt generated from LLM:]**''')
             st.write(new_prompt)
 
@@ -83,7 +88,7 @@ with tab2:
     
         if submitted2 and len(prompt_text) > 0:
             st.markdown(f"""
-            This will show an image using **stable diffusion XL 1.0** with prompt - *{prompt_text}* entered:
+            This will show an image using **stable diffusion XL ** with prompt - *{prompt_text}* entered:
             """)
             # Create a spinner to show the image is being generated
             with st.spinner('Generating image based on prompt'):
@@ -97,5 +102,3 @@ with tab2:
 
 ###############################################################################
 ###############################################################################
-
-
