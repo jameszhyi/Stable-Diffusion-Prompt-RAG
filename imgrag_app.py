@@ -70,7 +70,7 @@ with tab1:
             
             st.markdown('''**:blue[Below are the relevant prompts in DIFFUSIONDB:]**''')
             for i in range(len(list_prompts)):
-                st.write("- " + list_prompts[i])
+                st.write(i, ": " + list_prompts[i])
                         
             number_selected = st.number_input('Which prompt you want to use for further improvement? Insert a number',value=0)
             print(list_prompts[number_selected])
